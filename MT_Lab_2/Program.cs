@@ -8,7 +8,11 @@ namespace MT_Lab_2
     {
         static void Main(string[] args)
         {
-            string str = Console.ReadLine(), resStr = "", doubleChar = Console.ReadLine(), strCopy = str;
+            //Получение отсортированного словаря количества вхождений уникальных символов
+            Console.WriteLine("Введите текст");
+            string str = Console.ReadLine(), resStr = "";
+            Console.WriteLine("\nВведите пользовательскую пару символов");
+            string doubleChar = Console.ReadLine(), strCopy = str;
             char[] chars = str.ToCharArray();
             int doubleCounter = 0;
 
@@ -26,7 +30,7 @@ namespace MT_Lab_2
                 resStr += $"'{kvp.Key}' : {kvp.Value}, ";
             }
             resStr = resStr.TrimEnd(new char[] { ',', ' ' });
-            Console.WriteLine("\nИнициализированный словарь уникальных символов" + resStr);
+            Console.WriteLine("\nИнициализированный словарь уникальных символов:\n" + resStr);
 
             resStr = "";
             foreach (char i in str)
@@ -38,14 +42,14 @@ namespace MT_Lab_2
                 resStr += $"'{kvp.Key}' : {kvp.Value}, ";
             }
             resStr = resStr.TrimEnd(new char[] { ',', ' ' });
-            Console.WriteLine("\nКоличество вхождений уникальных символов в строку: " + resStr);
+            Console.WriteLine("\nКоличество вхождений уникальных символов в строку:\n" + resStr);
 
             while (strCopy.IndexOf(doubleChar) > -1)
             {
                 strCopy = strCopy.Remove(strCopy.IndexOf(doubleChar), 2);
                 doubleCounter += 1;
             }
-            Console.WriteLine("\nКоличество вхождений пользовательской пары в строку: " + doubleCounter);
+            Console.WriteLine("\nКоличество вхождений пользовательской пары в строку:\n" + doubleCounter);
 
             resStr = "";
             for (int i = 0; i <= str.Length - 2; i++)
@@ -61,7 +65,7 @@ namespace MT_Lab_2
                 resStr += $"'{kvp.Key}' : {kvp.Value}, ";
             }
             resStr = resStr.TrimEnd(new char[] { ',', ' ' });
-            Console.WriteLine("\nИнициализированный словарь уникальных двойных сочетаний: " + resStr);
+            Console.WriteLine("\nИнициализированный словарь уникальных двойных сочетаний:\n" + resStr);
 
             resStr = "";
             for (int i = 0; i <= str.Length - 2; i++)
@@ -74,7 +78,7 @@ namespace MT_Lab_2
                 resStr += $"'{kvp.Key}' : {kvp.Value}, ";
             }
             resStr = resStr.TrimEnd(new char[] { ',', ' ' });
-            Console.WriteLine("\nКоличество вхождений уникальных пар символов в строку: " + resStr);
+            Console.WriteLine("\nКоличество вхождений уникальных пар символов в строку:\n" + resStr);
 
             resStr = "";
             int frequency = 0;
@@ -92,228 +96,129 @@ namespace MT_Lab_2
                     signs.Add(kvp.Key, kvp.Value);
                 }
             }
-            ////Dictionary<string, int> abc = new Dictionary<string, int>();
 
-            ////foreach (KeyValuePair<string, int> kvp in signs)
-            ////{
-            ////    abc.Add(kvp.Key, kvp.Value);
-            ////}
-            Sorted(ref signs);
-            //Sorted(ref abc);
-            //Console.WriteLine();
-            //foreach (KeyValuePair<string, int> kvp in abc)
-            //{
-            //    Console.Write($"{kvp.Key}: {kvp.Value}");
-            //}
-            //Console.WriteLine();
-
+            SortDic(ref signs);
             foreach (KeyValuePair<string, int> kvp in signs)
             {
                 resStr += $"'{kvp.Key}' : {kvp.Value}, ";
             }
             resStr = resStr.TrimEnd(new char[] { ',', ' ' });
-            Console.WriteLine("\nСловарь с добавленными самыми частовстречаемыми двойными комбинациями" + resStr);
+            Console.WriteLine("\nСловарь с добавленными самыми частовстречаемыми двойными комбинациями:\n" + resStr);
 
-            static void Sorted(ref Dictionary<string, int> signs)
+            static void SortDic(ref Dictionary<string, int> signs)
             {
                 signs = signs.OrderBy(pair => pair.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
             }
 
-            //ПОлучвение кодов
+            //Составление дерева
+            static void SortList(ref List<Node> list)
+            {
+                Node buff;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    for (int j = i + 1; j < list.Count; j++)
+                    {
+                        if (list[i].Value > list[j].Value)
+                        {
+                            buff = list[i];
+                            list[i] = list[j];
+                            list[j] = buff;
+                        }
+                    }
+                }
+            }
 
-            //    Dictionary<string, string> keys = new Dictionary<string, string>();
-            //    keys.Add(signs.ElementAt(0).Key, "0");
-            //    keys.Add(signs.ElementAt(1).Key, "1");
-            //    int countBuf = signs.ElementAt(0).Value + signs.ElementAt(1).Value;
-            //    signs.Remove(signs.ElementAt(0).Key);
-            //    signs.Remove(signs.ElementAt(0).Key);
-            //    byte plug = 0;
-            //    signs.Add(Convert.ToString(plug), countBuf);
-            //    int countNewSymb = 0;
-            //Here:
-            //    for (int i = 0; i < 3; i++)
-            //    {
-            //        if (signs.Count > 2)
-            //        {
-            //            if (signs.ElementAt(i).Value + signs.ElementAt(i + 1).Value <= signs.ElementAt(i + 1).Value + signs.ElementAt(i + 2).Value)
-            //            {
-            //                for (int j = 0; j < keys.Count - countNewSymb; j++)
-            //                {
-            //                    keys[keys.ElementAt(j).Key] = string.Concat(keys.ElementAt(j).Value, "0");
-            //                }
-            //                keys.Add(signs.ElementAt(i + 1).Key, "1");
-            //                int countBufF = signs.ElementAt(i).Value + signs.ElementAt(i + 1).Value;
-            //                signs.Remove(signs.ElementAt(i).Key);
-            //                signs.Remove(signs.ElementAt(i).Key);
-            //                //signs.Reverse();
-            //                plug++;
-            //                signs.Add(Convert.ToString(plug), countBufF);
-            //                //Sorted(ref signs);
-            //                //signs.Reverse();
-            //                goto Here;
-            //            }
-            //            else
-            //            {
-            //                if (!keys.ContainsKey(signs.ElementAt(i + 1).Key) && !keys.ContainsKey(signs.ElementAt(i + 2).Key))
-            //                {
-            //                    keys.Add(signs.ElementAt(i + 1).Key, "0");
-            //                    keys.Add(signs.ElementAt(i + 2).Key, "1");
-            //                    countNewSymb += 2;
-            //                    int countBufF = signs.ElementAt(i + 1).Value + signs.ElementAt(i + 2).Value;
-            //                    signs.Remove(signs.ElementAt(i + 1).Key);
-            //                    signs.Remove(signs.ElementAt(i + 1).Key);
-            //                    //signs.Reverse();
-            //                    plug++;
-            //                    signs.Add(Convert.ToString(plug), countBufF);
-            //                    //Sorted(ref signs);
-            //                        //signs.Reverse();
-            //                    goto Here;
-            //                }
-            //                else
-            //                {
-            //                    for (int k = keys.Count - 1; k > keys.Count - countNewSymb; i--)
-            //                    {
-            //                        keys[keys.ElementAt(k).Key] = string.Concat(keys.ElementAt(k).Value, "0");
-            //                    }
-            //                    keys.Add(signs.ElementAt(i + 2).Key, "1");
-            //                    countNewSymb += 1;
-            //                    int countBufF = signs.ElementAt(i + 1).Value + signs.ElementAt(i + 2).Value;
-            //                    signs.Remove(signs.ElementAt(i + 1).Key);
-            //                    signs.Remove(signs.ElementAt(i + 1).Key);
-            //                    //signs.Reverse();
-            //                    plug++;
-            //                    signs.Add(Convert.ToString(plug), countBufF);
-            //                    //Sorted(ref signs);
-            //                        //signs.Reverse();
-            //                    goto Here;
-            //                }
-            //            }
-            //        }
-            //    }
+            List<Node> signNodes = new List<Node>();
+            List<Node> treeNodes = new List<Node>();
+
+            foreach (KeyValuePair<string, int> kvp in signs)
+            {
+                Node oN = new Node(kvp.Key, kvp.Value);
+                signNodes.Add(oN);
+            }
+
+            do
+            {
+                for (int i = 0; i < 2; i++)
+                {
+
+                    treeNodes.Add(signNodes[i]);
+                    if (i == 1)
+                    {
+                        Node nN = new Node(treeNodes[treeNodes.Count - 2], treeNodes[treeNodes.Count - 1], treeNodes[treeNodes.Count - 2].Value + treeNodes[treeNodes.Count - 1].Value);
+                        signNodes.RemoveAt(0);
+                        signNodes.RemoveAt(0);
+                        signNodes.Add(nN);
+                        SortList(ref signNodes);
+                    }
+                }
+            } while (signNodes.Count > 1);
+            treeNodes.Add(signNodes[0]);
+            signNodes.RemoveAt(0);
+
+            //Получение кодов
+            void CreateBitCodes(Node n)
+            {
+                if (n.Sign == null)
+                {
+
+                    n.LargeParent.CodeBit = n.CodeBit + "1";
+                    CreateBitCodes(n.LargeParent);
 
 
+                    n.SmallParent.CodeBit = n.CodeBit + "0";
+                    CreateBitCodes(n.SmallParent);
+                }
+            }
 
+            CreateBitCodes(treeNodes[treeNodes.Count - 1]);
 
-            List<Node> child = new List<Node>();
-            Node firstSign = new Node(signs.ElementAt(0).Value), secondSign = new Node(signs.ElementAt(1).Value);
-            List<NodeSParent> sParent = new List<NodeSParent>();
-            List<NodeLParent> lParent = new List<NodeLParent>();
-            firstSign.OriginCode = "0";
-            secondSign.OriginCode = "1";
-            child.Add(firstSign);
-            child.Add(secondSign);
-            signs.Remove(signs.ElementAt(0).Key);
-            signs.Remove(signs.ElementAt(0).Key);
-            byte plug = 0;
-            signs.Add(Convert.ToString(plug), firstSign.OriginValue + secondSign.OriginValue);
+            Dictionary<string, string> signCodes = new Dictionary<string, string>();
+            foreach (Node n in treeNodes)
+            {
+                if (n.Sign != null)
+                {
+                    signCodes.Add(n.Sign, n.CodeBit);
+                }
+            }
+
+            Console.WriteLine("\nКод для каждого символа:");
+            foreach (KeyValuePair<string, string> kvp in signCodes)
+            {
+                Console.WriteLine(kvp.Key + ": " + kvp.Value);
+            }
+
+            //Кодирование строки
+            Console.WriteLine("\nВведите строку для кодирования");
+            string testStr = Console.ReadLine(), crypTestStr = "";
+            for (int i = 0; i < testStr.Length; i++)
+            {
+                if (signCodes.ContainsKey(Convert.ToString(testStr[i])))
+                {
+                    crypTestStr += signCodes[Convert.ToString(testStr[i])];
+                }
+            }
+            Console.WriteLine("\nЗакодированная пользовательская строка:\n" + crypTestStr);
+
+            //Декодирование строки
+            string decChar = "", decStr = "";
         Here:
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < crypTestStr.Length; i++)
             {
-                if (signs.Count > 2)
+                decChar += crypTestStr[i];
+                if (signCodes.ContainsValue(decChar))
                 {
-                    if (signs.ElementAt(i).Value + signs.ElementAt(i + 1).Value <= signs.ElementAt(i + 1).Value + signs.ElementAt(i + 2).Value)
-                    {
-                        Node c = new Node(signs.ElementAt(i).Value, signs.ElementAt(i + 1).Value);
-                        NodeSParent nSP = new NodeSParent(signs.ElementAt(i).Value);
-                        nSP.Code = "0";
-                        c.SmallParent = nSP;
-                        sParent.Add(nSP);
-                        NodeLParent nLP = new NodeLParent(signs.ElementAt(i + 1).Value);
-                        nLP.Code = "1";
-                        c.LargeParent = nLP;
-                        lParent.Add(nLP);
-                        child.Add(c);
-                        signs.Remove(signs.ElementAt(i).Key);
-                        signs.Remove(signs.ElementAt(i).Key);
-                        plug++;
-                        signs.Add(Convert.ToString(plug), c.SmallParent.Value + c.LargeParent.Value);
-                        Sorted(ref signs);
-                        goto Here;
-                    }
-                    else
-                    {
-                        Node anotherFirstOriginSign = new Node(signs.ElementAt(i + 1).Value);
-                        Node anotherSecondOriginSign = new Node(signs.ElementAt(i + 2).Value);
-                        anotherFirstOriginSign.OriginCode = "0";
-                        anotherSecondOriginSign.OriginCode = "1";
-                        child.Add(anotherFirstOriginSign);
-                        child.Add(anotherSecondOriginSign);
-                        signs.Remove(signs.ElementAt(i + 1).Key);
-                        signs.Remove(signs.ElementAt(i + 1).Key);
-                        plug++;
-                        signs.Add(Convert.ToString(plug), anotherFirstOriginSign.OriginValue + anotherSecondOriginSign.OriginValue);
-                        Sorted(ref signs);
-                        goto Here;
-                    }
+                    decStr += signCodes.Where(x => x.Value == decChar).First().Key;
+                    decChar = "";
+                }
+                if (crypTestStr.Length > 0)
+                {
+                    crypTestStr = crypTestStr.Remove(0, 1);
+                    goto Here;
                 }
             }
-            byte byteParse;
-            if (byte.TryParse(signs.ElementAt(0).Key, out byteParse) == true && byte.TryParse(signs.ElementAt(1).Key, out byteParse) == true)
-            {
-                Node c = new Node(signs.ElementAt(0).Value, signs.ElementAt(1).Value);
-                NodeSParent nSP = new NodeSParent(signs.ElementAt(0).Value);
-                nSP.Code = "0";
-                c.SmallParent = nSP;
-                sParent.Add(nSP);
-                NodeLParent nLP = new NodeLParent(signs.ElementAt(1).Value);
-                nLP.Code = "1";
-                c.LargeParent = nLP;
-                lParent.Add(nLP);
-                child.Add(c);
-                signs.Remove(signs.ElementAt(0).Key);
-                signs.Remove(signs.ElementAt(0).Key);
-            }
-            else if (byte.TryParse(signs.ElementAt(0).Key, out byteParse) == true && byte.TryParse(signs.ElementAt(1).Key, out byteParse) == false)
-            {
-                Node c = new Node(signs.ElementAt(0).Value, signs.ElementAt(1).Value);
-                NodeSParent nSP = new NodeSParent(signs.ElementAt(0).Value);
-                nSP.Code = "0";
-                c.SmallParent = nSP;
-                sParent.Add(nSP);
-                Node anotherSecondOriginSign = new Node(signs.ElementAt(1).Value);
-                anotherSecondOriginSign.OriginCode = "1";
-                child.Add(anotherSecondOriginSign);
-                signs.Remove(signs.ElementAt(0).Key);
-                signs.Remove(signs.ElementAt(0).Key);
-            }
-            else if (byte.TryParse(signs.ElementAt(1).Key, out byteParse) == true)
-            {
-                Node anotherFirstOriginSign = new Node(signs.ElementAt(0).Value);
-                anotherFirstOriginSign.OriginCode = "0";
-                child.Add(anotherFirstOriginSign);
+            Console.WriteLine("\nДекодированная пользовательская строка:\n" + decStr);
 
-                Node c = new Node(signs.ElementAt(0).Value, signs.ElementAt(1).Value);
-                NodeLParent nLP = new NodeLParent(signs.ElementAt(1).Value);
-                nLP.Code = "1";
-                c.LargeParent = nLP;
-                lParent.Add(nLP);
-
-                signs.Remove(signs.ElementAt(0).Key);
-                signs.Remove(signs.ElementAt(0).Key);
-            }
-            else
-            {
-                Node anotherFirstOriginSign = new Node(signs.ElementAt(0).Value);
-                Node anotherSecondOriginSign = new Node(signs.ElementAt(1).Value);
-                anotherFirstOriginSign.OriginCode = "0";
-                anotherSecondOriginSign.OriginCode = "1";
-                child.Add(anotherFirstOriginSign);
-                child.Add(anotherSecondOriginSign);
-                signs.Remove(signs.ElementAt(0).Key);
-                signs.Remove(signs.ElementAt(0).Key);
-            }
-
-            for (int i = 0; i < child.Count; i++)
-            {
-                string huffCode0 = "", huffCode1 = "";
-                if (child[i].OriginCode == null)
-                {
-                    huffCode0 += child[i].SmallParent.Code;
-                    huffCode1 += child[i].LargeParent.Code;
-                }
-            }
-
-            Console.ReadKey();
         }
     }
 }

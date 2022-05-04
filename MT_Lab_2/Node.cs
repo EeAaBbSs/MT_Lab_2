@@ -6,20 +6,25 @@ namespace MT_Lab_2
 {
     class Node
     {
-        public Node(int originValue)
+        public Node()
         {
-            OriginValue = originValue;
+
         }
-        public Node(int smallValue, int largeValue)
+        public Node(string sign, int value)
         {
-            Value = smallValue + largeValue;
+            Sign = sign;
+            Value = value;
         }
-        public string OriginCode { get; set; }
-        public int OriginValue { get; set; }
-        public NodeSParent SmallParent { get; set; }
-        public NodeLParent LargeParent { get; set; }
+        public Node(Node smallParent, Node largeParent, int value)
+        {
+            SmallParent = smallParent;
+            LargeParent = largeParent;
+            Value = value;
+        }
+        public string CodeBit { get; set; }
+        public string Sign { get; set; }
+        public Node SmallParent { get; set; }
+        public Node LargeParent { get; set; }
         public int Value { get; set; }
-        //public Node Child { get; set; }
-        //public string Code { get; set; }
     }
 }
