@@ -191,12 +191,21 @@ namespace MT_Lab_2
             //Кодирование строки
             Console.WriteLine("\nВведите строку для кодирования");
             string testStr = Console.ReadLine(), crypTestStr = "";
-            for (int i = 0; i < testStr.Length; i++)
+            for (int i = 0; i < testStr.Length - 1; i++)
             {
-                if (signCodes.ContainsKey(Convert.ToString(testStr[i])))
+                if (signCodes.ContainsKey(Convert.ToString(testStr[i] + Convert.ToString(testStr[i + 1]))))
+                {
+                    crypTestStr += signCodes[Convert.ToString(testStr[i] + Convert.ToString(testStr[i + 1]))];
+                    i++;
+                }
+                else if (signCodes.ContainsKey(Convert.ToString(testStr[i])))
                 {
                     crypTestStr += signCodes[Convert.ToString(testStr[i])];
                 }
+            }
+            if (signCodes.ContainsKey(Convert.ToString(testStr[testStr.Length - 1])))
+            {
+                crypTestStr += signCodes[Convert.ToString(testStr[testStr.Length - 1])];
             }
             Console.WriteLine("\nЗакодированная пользовательская строка:\n" + crypTestStr);
 

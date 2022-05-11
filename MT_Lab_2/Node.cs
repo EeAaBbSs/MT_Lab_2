@@ -6,10 +6,6 @@ namespace MT_Lab_2
 {
     class Node
     {
-        public Node()
-        {
-
-        }
         public Node(string sign, int value)
         {
             Sign = sign;
